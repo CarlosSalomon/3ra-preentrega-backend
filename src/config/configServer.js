@@ -1,14 +1,14 @@
 import mongoose from "mongoose";
-import dotenv from 'dotenv';
+import {options} from '../config/config.js';
 
-dotenv.config();
 
-const URI = process.env.MONGODB_URI;
+
+const URL = options.mongo.url;
 
 
 const connectToDB = () => {
     try {
-        mongoose.connect(URI)
+        mongoose.connect(URL)
         console.log('connected to DB')
     } catch (error) {
         console.log(error);
