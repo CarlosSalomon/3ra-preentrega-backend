@@ -94,8 +94,8 @@ class CartController {
 
                 let newCart = await productsService.updateProduct(req.params.cid, cart)
                 const user = req.session.user
-
-                const ticket = ({ code: `${req.session.user.first_name}_${Date.now()}`, amount: total_price, purchaser: req.session.user.email })
+                console.log(user)
+                const ticket = ({ code: `${req.session.user.name}_${Date.now()}`, amount: total_price, purchaser: req.session.user.email, purchase_datetime:` ${Date.now()}` })
 
                 let newTicket = await createTicket(ticket)
                 
