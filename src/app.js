@@ -8,6 +8,7 @@ import { Server } from "socket.io"
 import cookieParser from "cookie-parser"
 import connectToDB from "./config/configServer.js"
 import session from "express-session"
+import { usersRouterMocks } from '../src/mocks/routes/user.router.js';
 //socketservers
 import socketProducts from "./listeners/socketProducts.js"
 import socketChatServer from "./listeners/socketChatServer.js"
@@ -70,9 +71,11 @@ app.get('/getCookies', (req, res) => {
 
 app.use("/api", productRouter)
 app.use("/api", cartRouter)
+app.use("/api", usersRouterMocks)
 app.use("/", viewRouter)
 app.use("/", dbRouter)
 app.use('/sessions', sessionsRouter)
+
 
 const httpServer = app.listen(PORT, () => {
     try {

@@ -1,5 +1,9 @@
 import { cartService, productsService, userService } from "../repository/index.js"
 import { createTicket } from "../dao/mongoDB/mongomanagers/ticketManagerMongo.js";
+import CustomError from "../dao/errors/CustomError.js";
+import EErrors from "../dao/errors/errors-enums.js";
+import {addToCartErrorInfoSP} from "../dao/errors/messages/product-creation-error.message.js"
+
 class CartController {
 
     static getCartById = async (req, res) => {
@@ -51,8 +55,14 @@ class CartController {
                 if (productDetails.stock >= quantity) {
                     const addedProduct = await cartService.addProductInCart(cartId, productDetails, id, quantity); 
                 } else {
-                    console.error('Error al agregar producto al carrito:', error);
-                    res.status(500).json({ message: 'No hay stock suficiente' });
+                    const error = CustomError.createError({
+                        name: 'StockError',
+                        message: 'No hay stock suficiente',
+                        code: EErrors.INADEQUATE_STOCK_ERROR,
+                        cause: addToCartErrorInfoSP ({quantity})
+                        
+                    });
+ 
                 }
             }
             res.json({ success: true, message: 'Producto agregado al carrito' });
